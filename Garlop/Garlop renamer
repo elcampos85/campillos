@@ -1,0 +1,50 @@
+#!/bin/bash
+a="$(zenity --file-selection --directory --title="Elige la carpeta de destino")"
+cd "$a"
+if test ! "$a"
+	then
+		zenity --error --title="GarLop" --text="Saliendo del programa"
+	else
+
+		ext="$(zenity --entry --title="GarLop" --text="Escriba la extesión" --title="Extensión")"
+		nombre="$(zenity --entry --text="¿Qué nombre desea?" --title="GarLop")"
+		num=$(ls -1 *.$ext | wc -l)
+		cont=0
+		cuenta=9
+		count=99
+		nombre="$nombre"" "
+		for archivo in  *.$ext
+		do
+			if test $num -ge 100
+				then
+					if test $cuenta == 99
+							then
+								((count=$count+1))
+								nuevonombre=$nombre$count
+								mv "$archivo" "$nuevonombre".$ext	
+					elif test $cont == 9
+							then
+								((cuenta=$cuenta+1))
+								nuevonombre=$nombre"0"$cuenta
+								mv "$archivo" "$nuevonombre".$ext
+							else
+								((cont=$cont+1))
+								nuevonombre=$nombre"00"$cont
+								mv "$archivo" "$nuevonombre".$ext
+					fi
+			else
+				if test $cont == 9
+					then
+						((cuenta=$cuenta+1))
+						nuevonombre=$nombre$cuenta
+						mv "$archivo" "$nuevonombre".$ext
+					else
+						((cont=$cont+1))
+						nuevonombre=$nombre"0"$cont
+						mv "$archivo" "$nuevonombre".$ext
+				fi
+			fi
+		done
+	zenity --info --title="GarLop" --text="Terminado. Qué tenga buen día"
+	clear
+fi
